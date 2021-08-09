@@ -1,11 +1,11 @@
 import React from "react";
 
 export interface GeneralProps {
-  heroes: Hero[] | null,
+  heroes: HeroType[] | null,
   setHeroes: React.Dispatch<React.SetStateAction<null>>,
 }
 
-export interface Hero {
+export interface HeroType {
   id: number,
   name: string,
   realName: string,

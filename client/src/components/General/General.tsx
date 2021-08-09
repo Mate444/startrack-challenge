@@ -1,8 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
-import { GeneralProps, Hero } from "../../types";
+import SearchBar from "../SearchBar/SearchBar";
+import { GeneralProps, HeroType } from "../../types";
 const General = (props: GeneralProps) => {
   const { heroes, setHeroes } = props;
+  const [ lastIndex, setLastIndex ] = useState(16);
+  const loader = useRef(null);
+    console.log();
+  const handleObserver = useCallback((entries) => {
+    const target = entries[0];
+    console.log(target)
+    if (target.isIntersecting) {
+      setLastIndex(lastIndex + 16);
+    }
+  }, [setLastIndex, lastIndex])
+  
+  useEffect(() => {
+    const target = document.querySelector('#heroes-list');
+    const options = {
+      root: target,
+      rootMargin: '0px',
+      threshold: 0.5
+    };
+    const observer = new IntersectionObserver(handleObserver, options);
+    console.log(loader)
+    if (loader && loader.current) {
+      target && observer.observe(target);
+    }
+  }, [loader, handleObserver])
+  console.log(lastIndex)
   useEffect(() => {
     async function getHeroes() {
       axios
@@ -20,7 +46,6 @@ const General = (props: GeneralProps) => {
             }
           });
           setHeroes(fixedHeroes);
-          console.log(r.data);
         })
         .catch((err) => console.log(err));
     }
@@ -28,14 +53,20 @@ const General = (props: GeneralProps) => {
     //eslint-disable-next-line
   }, []);
   console.log(heroes);
+  const heroesToDisplay = heroes?.slice(0, lastIndex);
   return <div>
+    <SearchBar />
+    <div ref={loader} id='heroes-list' className='heroes-window'>
     {
-      heroes && heroes.map((h, i) => (
+      heroes && heroesToDisplay?.map((h, i) => (
         <div key={i}>
           <p>{h.name}</p>
+          <p>{h.realName}</p>
+          <img src={h.image} alt='Hero'/>
         </div>
       ))
     }
+    </div>    
   </div>;
 };
 
