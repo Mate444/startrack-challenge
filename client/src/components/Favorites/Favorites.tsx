@@ -17,6 +17,7 @@ const Favorites = (props: FavoriteProps) => {
     const { heroes, favoriteHeroes, setFavoriteHeroes } = props;
 function handleFavoriteHeroes(id: number) {
   const filteredFavoriteHeroes = favoriteHeroes.filter((heroId: number) => heroId !== id);
+  localStorage.setItem('favoritesArray', JSON.stringify(filteredFavoriteHeroes));
   setFavoriteHeroes(filteredFavoriteHeroes);
 }
 console.log(favoriteHeroes)

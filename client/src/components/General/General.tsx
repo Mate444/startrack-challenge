@@ -8,6 +8,7 @@ const General = (props: GeneralProps) => {
   const { heroes, setHeroes, setFavoriteHeroes, favoriteHeroes } = props;
   const [ lastIndex, setLastIndex ] = useState(16);
   const [generalHeroes, setGeneralHeroes] = useState(heroes);
+  const [flag, setFlag] = useState(false);
   const loader = useRef(null);
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
@@ -57,11 +58,20 @@ const General = (props: GeneralProps) => {
   useEffect(() => {
     const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
     filtered && setGeneralHeroes(filtered);
-    console.log(filtered);
-  }, [favoriteHeroes, heroes]);
+    if (flag) {
+      localStorage.setItem('favoritesArray', JSON.stringify(favoriteHeroes));
+    }
+  }, [favoriteHeroes, heroes, flag]);
+  useEffect(() => {
+    const retrieved = localStorage.getItem('favoritesArray');
+    retrieved && console.log(JSON.parse(retrieved))
+    console.log(retrieved);
+    retrieved && setFavoriteHeroes(JSON.parse(retrieved));
+  }, [])
   const heroesToDisplay = generalHeroes?.slice(0, lastIndex);
   function handleFavoriteHeroes(id: number) {
    setFavoriteHeroes([...favoriteHeroes, id]);
+   setFlag(true);
   }
   return <div>
     <SearchBar />
