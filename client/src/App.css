@@ -8,7 +8,5 @@
   justify-content: center;
   gap: 2em;
   flex-wrap: wrap;
-  overflow-y:scroll;
-  overflow-x: hidden;
   scroll-behavior: smooth;
 }

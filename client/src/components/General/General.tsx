@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import { GeneralProps, HeroType } from "../../types";
+import {FixedSizeList} from 'react-window';
 import Hero from "../Hero/Hero";
 
 const General = (props: GeneralProps) => {
@@ -58,20 +59,37 @@ const General = (props: GeneralProps) => {
    setFavoriteHeroes([...favoriteHeroes, id]);
    setFlag(true);
   }
-  return <div>
-    <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
-    <div className='heroes-window'>
-    {
-      heroes && generalHeroes && generalHeroes.length > 0 ? generalHeroes?.map((h: HeroType, i: number) => (
+  const Row = (props:any) => {
+    const { rowIndex, style, data } = props;
+    console.log(props);
+    return (
+      <div>
+     { heroes && generalHeroes && generalHeroes.length > 0 && data?.map((h: HeroType, i: number) => (
         <div key={i}>
           <Hero favoriteHeroes={favoriteHeroes} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} />
         </div>
-      )) :
-      <div>
+              ))
+     }
+      </div>    
+    )
+  }
+  return <div>
+    <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+      { heroes && generalHeroes && generalHeroes.length > 0 ?
+        <FixedSizeList
+       itemSize={300}
+       width='100%'
+       height={300}
+       itemCount={1}
+       itemData={generalHeroes}
+        >
+          {Row}
+        </FixedSizeList> :
+        <div>
         <h1>Hero Not Found</h1>
       </div>
-    } 
-    </div>    
+      }
+
   </div>;
 };
 
