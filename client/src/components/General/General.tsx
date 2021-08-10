@@ -5,33 +5,8 @@ import { GeneralProps, HeroType } from "../../types";
 const General = (props: GeneralProps) => {
   const { heroes, setHeroes } = props;
   const [ lastIndex, setLastIndex ] = useState(16);
-  // const loader = useRef(null);
-  //   console.log();
-  // const handleObserver = useCallback((entries) => {
-  //   const target = entries[0];
-  //   console.log(target)
-  //   //si el target esta en la pagina ( a la vista)
-  //   if (target.isIntersecting) {
-  //     setLastIndex(lastIndex + 16);
-  //   }
-  // }, [setLastIndex, lastIndex])
-  
-  // useEffect(() => {
-  //   const target = document.querySelector('heroes-window');
-  //   const options = {
-  //     root: target,
-  //     rootMargin: '0px',
-  //     threshold: 0.5
-  //   };
-  //   const observer = new IntersectionObserver(handleObserver, options);
-  //   console.log(loader)
-  //   if (loader && loader.current) {
-  //     target && observer.observe(target);
-  //   }
-  // }, [loader, handleObserver])
-  // console.log(lastIndex)
+  const [searchInput, setSearchInput] = useState<string>('');
   const target = document.querySelector('#general-loader');
-  console.log(target)
   const options = {
     root: null, //this is the viewport
     threshold: 0.50, // esto seria cuanto porcentaje del target tiene que verse para que se ejecute el observer
@@ -39,7 +14,6 @@ const General = (props: GeneralProps) => {
   };
   const observer = new IntersectionObserver(function(entries, observer) {
     entries.forEach((e) => {
-      console.log(e)
       if (e.isIntersecting) {
         setLastIndex(lastIndex + 8);
       }
@@ -69,9 +43,12 @@ const General = (props: GeneralProps) => {
     getHeroes();
     //eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    
+  })
   const heroesToDisplay = heroes?.slice(0, lastIndex);
   return <div>
-    <SearchBar />
+    <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
     <div className='heroes-window'>
     {
       heroes && heroesToDisplay?.map((h, i) => (
