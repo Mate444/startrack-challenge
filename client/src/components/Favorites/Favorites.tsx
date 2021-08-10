@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FavoriteProps, HeroType } from '../../types';
 import FavoriteHero from '../FavoriteHero/FavoriteHero';
+import swal from 'sweetalert2'
 
 function filterProperly(arr1:any, arr2:any) {
   const newArr = [];
@@ -16,6 +17,10 @@ const Favorites = (props: FavoriteProps) => {
   const { heroes, favoriteHeroes, setFavoriteHeroes } = props;
   const [toggle, setToggle] = useState('open');
   function handleFavoriteHeroes(id: number) {
+    swal.fire({
+      title: 'Hero deleted from Favorites',
+      icon: 'warning',
+    })
     const filteredFavoriteHeroes = favoriteHeroes.filter((heroId: number) => heroId !== id);
     localStorage.setItem('favoritesArray', JSON.stringify(filteredFavoriteHeroes));
     setFavoriteHeroes(filteredFavoriteHeroes);
@@ -41,7 +46,7 @@ const Favorites = (props: FavoriteProps) => {
       {
         toggle === 'closed' &&
         <div>
-          <p>Liked</p>
+          <p>You haven't added a Hero to your favorites list yet</p>
           <button onClick={() => setToggle('open')}>▼</button>
         </div>
       }
