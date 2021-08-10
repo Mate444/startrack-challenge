@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
@@ -8,20 +9,6 @@ const General = (props: GeneralProps) => {
   const { heroes, setHeroes, setFavoriteHeroes, favoriteHeroes } = props;
   const [ lastIndex, setLastIndex ] = useState(16);
   const [searchInput, setSearchInput] = useState<string>('');
-  const target = document.querySelector('#general-loader');
-  const options = {
-    root: null, //this is the viewport
-    threshold: 0.50, // esto seria cuanto porcentaje del target tiene que verse para que se ejecute el observer
-    rootMargin: '150px' //Esto hace que se demore mas el viewport en ser watcheado
-  };
-  const observer = new IntersectionObserver(function(entries, observer) {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        setLastIndex(lastIndex + 8);
-      }
-    })
-  }, options)
-  target && observer.observe(target)
   const [generalHeroes, setGeneralHeroes] = useState(heroes);
   const [flag, setFlag] = useState(false);
   useEffect(() => {
@@ -46,7 +33,6 @@ const General = (props: GeneralProps) => {
         .catch((err) => console.log(err));
     }
     getHeroes();
-    //eslint-disable-next-line
   }, []);
   useEffect(() => {
     const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
@@ -57,11 +43,17 @@ const General = (props: GeneralProps) => {
   }, [favoriteHeroes, heroes, flag]);
   useEffect(() => {
     const retrieved = localStorage.getItem('favoritesArray');
-    retrieved && console.log(JSON.parse(retrieved))
-    console.log(retrieved);
     retrieved && setFavoriteHeroes(JSON.parse(retrieved));
   }, [])
-  const heroesToDisplay = generalHeroes?.slice(0, lastIndex);
+  useEffect(() => {
+    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
+    if (searchInput.length > 0) {
+      const heroResults = filtered?.filter((h) => h.name.includes(searchInput))
+      heroResults && setGeneralHeroes(heroResults)
+    } else {
+      filtered && setGeneralHeroes(filtered);
+    }
+  }, [searchInput])
   function handleFavoriteHeroes(id: number) {
    setFavoriteHeroes([...favoriteHeroes, id]);
    setFlag(true);
@@ -70,13 +62,15 @@ const General = (props: GeneralProps) => {
     <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
     <div className='heroes-window'>
     {
-      heroes && heroesToDisplay?.map((h: HeroType, i: number) => (
+      heroes && generalHeroes && generalHeroes.length > 0 ? generalHeroes?.map((h: HeroType, i: number) => (
         <div key={i}>
           <Hero favoriteHeroes={favoriteHeroes} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} />
         </div>
-      ))
-    }
-    <p id='general-loader'>Loading...</p>
+      )) :
+      <div>
+        <h1>Hero Not Found</h1>
+      </div>
+    } 
     </div>    
   </div>;
 };
