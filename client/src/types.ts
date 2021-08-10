@@ -2,7 +2,9 @@ import React from "react";
 
 export interface GeneralProps {
   heroes: HeroType[] | null,
-  setHeroes: React.Dispatch<React.SetStateAction<null>>,
+  setHeroes: React.Dispatch<React.SetStateAction<HeroType[] | null>>,
+  setFavoriteHeroes: React.Dispatch<React.SetStateAction<number[]>>
+  favoriteHeroes: number[]
 }
 
 export interface HeroType {
@@ -23,3 +25,14 @@ export interface HeroPowers {
   combat: number,
 }
 
+export interface FavoriteProps {
+  favoriteHeroes: number[],
+  setFavoriteHeroes: React.Dispatch<React.SetStateAction<number[]>>,
+  heroes: HeroType[] | null,
+}
+
+export interface HeroProps {
+  hero: HeroType,
+  handleFavoriteHeroes(id: number): void,
+  favoriteHeroes: number[]
+}

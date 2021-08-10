@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import { GeneralProps, HeroType } from "../../types";
+import Hero from "../Hero/Hero";
+
 const General = (props: GeneralProps) => {
-  const { heroes, setHeroes } = props;
+  const { heroes, setHeroes, setFavoriteHeroes, favoriteHeroes } = props;
   const [ lastIndex, setLastIndex ] = useState(16);
+  const [generalHeroes, setGeneralHeroes] = useState(heroes);
   const loader = useRef(null);
-    console.log();
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
     console.log(target)
@@ -28,7 +30,6 @@ const General = (props: GeneralProps) => {
       target && observer.observe(target);
     }
   }, [loader, handleObserver])
-  console.log(lastIndex)
   useEffect(() => {
     async function getHeroes() {
       axios
@@ -46,23 +47,29 @@ const General = (props: GeneralProps) => {
             }
           });
           setHeroes(fixedHeroes);
+          setGeneralHeroes(fixedHeroes)
         })
         .catch((err) => console.log(err));
     }
     getHeroes();
     //eslint-disable-next-line
   }, []);
-  console.log(heroes);
-  const heroesToDisplay = heroes?.slice(0, lastIndex);
+  useEffect(() => {
+    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
+    filtered && setGeneralHeroes(filtered);
+    console.log(filtered);
+  }, [favoriteHeroes, heroes]);
+  const heroesToDisplay = generalHeroes?.slice(0, lastIndex);
+  function handleFavoriteHeroes(id: number) {
+   setFavoriteHeroes([...favoriteHeroes, id]);
+  }
   return <div>
     <SearchBar />
     <div ref={loader} id='heroes-list' className='heroes-window'>
     {
-      heroes && heroesToDisplay?.map((h, i) => (
+      heroes && heroesToDisplay?.map((h: HeroType, i: number) => (
         <div key={i}>
-          <p>{h.name}</p>
-          <p>{h.realName}</p>
-          <img src={h.image} alt='Hero'/>
+          <Hero favoriteHeroes={favoriteHeroes} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} />
         </div>
       ))
     }
