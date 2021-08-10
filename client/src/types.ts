@@ -25,6 +25,11 @@ export interface HeroPowers {
   combat: number,
 }
 
+export interface SearchInput {
+  searchInput: string,
+  setSearchInput: React.Dispatch<React.SetStateAction<string>>, 
+}
+
 export interface FavoriteProps {
   favoriteHeroes: number[],
   setFavoriteHeroes: React.Dispatch<React.SetStateAction<number[]>>,

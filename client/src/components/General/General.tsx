@@ -1,89 +1,78 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import { GeneralProps, HeroType } from "../../types";
+import {FixedSizeList} from 'react-window';
 import Hero from "../Hero/Hero";
+import swal from 'sweetalert2'
 
 const General = (props: GeneralProps) => {
-  const { heroes, setHeroes, setFavoriteHeroes, favoriteHeroes } = props;
-  const [ lastIndex, setLastIndex ] = useState(16);
+  const { heroes, setFavoriteHeroes, favoriteHeroes } = props;
+  const [searchInput, setSearchInput] = useState<string>('');
   const [generalHeroes, setGeneralHeroes] = useState(heroes);
   const [flag, setFlag] = useState(false);
-  const loader = useRef(null);
-  const handleObserver = useCallback((entries) => {
-    const target = entries[0];
-    console.log(target)
-    if (target.isIntersecting) {
-      setLastIndex(lastIndex + 16);
-    }
-  }, [setLastIndex, lastIndex])
   
   useEffect(() => {
-    const target = document.querySelector('#heroes-list');
-    const options = {
-      root: target,
-      rootMargin: '0px',
-      threshold: 0.5
-    };
-    const observer = new IntersectionObserver(handleObserver, options);
-    console.log(loader)
-    if (loader && loader.current) {
-      target && observer.observe(target);
-    }
-  }, [loader, handleObserver])
-  useEffect(() => {
-    async function getHeroes() {
-      axios
-        .get(
-          "https://akabab.github.io/superhero-api/api/all.json"
-        )
-        .then((r) => {
-          const fixedHeroes = r.data.map((h:any) => {
-            return {
-              id: h.id,
-              name: h.name,
-              realName: h.biography.fullName,
-              power: h.powerstats,
-              image: h.images.sm,
-            }
-          });
-          setHeroes(fixedHeroes);
-          setGeneralHeroes(fixedHeroes)
-        })
-        .catch((err) => console.log(err));
-    }
-    getHeroes();
-    //eslint-disable-next-line
-  }, []);
-  useEffect(() => {
-    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
+    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);  
     filtered && setGeneralHeroes(filtered);
     if (flag) {
       localStorage.setItem('favoritesArray', JSON.stringify(favoriteHeroes));
-    }
-  }, [favoriteHeroes, heroes, flag]);
+    };
+  }, [favoriteHeroes]);
   useEffect(() => {
     const retrieved = localStorage.getItem('favoritesArray');
-    retrieved && console.log(JSON.parse(retrieved))
-    console.log(retrieved);
     retrieved && setFavoriteHeroes(JSON.parse(retrieved));
   }, [])
-  const heroesToDisplay = generalHeroes?.slice(0, lastIndex);
+  useEffect(() => {
+    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
+    if (searchInput.length > 0) {
+      const heroResults = filtered?.filter((h) => h.name.includes(searchInput));
+      heroResults && setGeneralHeroes(heroResults);
+    } else {
+      filtered && setGeneralHeroes(filtered);
+    };
+  }, [searchInput])
   function handleFavoriteHeroes(id: number) {
+    swal.fire({
+     title: 'New Hero added to Favorites!',
+     icon: 'success'
+   });
    setFavoriteHeroes([...favoriteHeroes, id]);
    setFlag(true);
-  }
-  return <div>
-    <SearchBar />
-    <div ref={loader} id='heroes-list' className='heroes-window'>
-    {
-      heroes && heroesToDisplay?.map((h: HeroType, i: number) => (
+   window.scrollTo(0, 0);
+  };
+  const Row = (props:any) => {
+    const { data } = props;
+    return (
+      <div>
+     { data?.map((h: HeroType, i: number) => (
         <div key={i}>
           <Hero favoriteHeroes={favoriteHeroes} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} />
         </div>
-      ))
-    }
-    </div>    
+              ))
+     }
+      </div>    
+    )
+  }
+  console.log('cuantos renderizados')
+  return <div>
+    <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
+      { heroes && generalHeroes && generalHeroes.length > 0 ?
+        <FixedSizeList
+       itemSize={300}
+       width='100%'
+       height={300}
+       itemCount={1}
+       itemData={generalHeroes}
+        >
+          {Row}
+        </FixedSizeList> :
+        <div>
+        <h1>Hero Not Found</h1>
+      </div>
+      }
+
   </div>;
 };
 
