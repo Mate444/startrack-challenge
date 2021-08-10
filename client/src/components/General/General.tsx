@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import { GeneralProps, HeroType } from "../../types";
+import Hero from "../Hero/Hero";
+
 const General = (props: GeneralProps) => {
-  const { heroes, setHeroes } = props;
+  const { heroes, setHeroes, setFavoriteHeroes, favoriteHeroes } = props;
   const [ lastIndex, setLastIndex ] = useState(16);
   const [searchInput, setSearchInput] = useState<string>('');
   const target = document.querySelector('#general-loader');
@@ -20,6 +22,8 @@ const General = (props: GeneralProps) => {
     })
   }, options)
   target && observer.observe(target)
+  const [generalHeroes, setGeneralHeroes] = useState(heroes);
+  const [flag, setFlag] = useState(false);
   useEffect(() => {
     async function getHeroes() {
       axios
@@ -37,6 +41,7 @@ const General = (props: GeneralProps) => {
             }
           });
           setHeroes(fixedHeroes);
+          setGeneralHeroes(fixedHeroes)
         })
         .catch((err) => console.log(err));
     }
@@ -44,18 +49,30 @@ const General = (props: GeneralProps) => {
     //eslint-disable-next-line
   }, []);
   useEffect(() => {
-    
-  })
-  const heroesToDisplay = heroes?.slice(0, lastIndex);
+    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
+    filtered && setGeneralHeroes(filtered);
+    if (flag) {
+      localStorage.setItem('favoritesArray', JSON.stringify(favoriteHeroes));
+    }
+  }, [favoriteHeroes, heroes, flag]);
+  useEffect(() => {
+    const retrieved = localStorage.getItem('favoritesArray');
+    retrieved && console.log(JSON.parse(retrieved))
+    console.log(retrieved);
+    retrieved && setFavoriteHeroes(JSON.parse(retrieved));
+  }, [])
+  const heroesToDisplay = generalHeroes?.slice(0, lastIndex);
+  function handleFavoriteHeroes(id: number) {
+   setFavoriteHeroes([...favoriteHeroes, id]);
+   setFlag(true);
+  }
   return <div>
     <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
     <div className='heroes-window'>
     {
-      heroes && heroesToDisplay?.map((h, i) => (
+      heroes && heroesToDisplay?.map((h: HeroType, i: number) => (
         <div key={i}>
-          <p>{h.name}</p>
-          <p>{h.realName}</p>
-          <img src={h.image} alt='Hero'/>
+          <Hero favoriteHeroes={favoriteHeroes} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} />
         </div>
       ))
     }
