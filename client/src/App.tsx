@@ -9,7 +9,6 @@ import './App.css';
 function App() {
   const [heroes, setHeroes] = useState<HeroType[] | null>(null);
   const [favoriteHeroes, setFavoriteHeroes] = useState<number[]>([]);
-  const [isFetching, setIsFetching] = useState<boolean>(true)
   useEffect(() => {
     async function getHeroes() {
       axios

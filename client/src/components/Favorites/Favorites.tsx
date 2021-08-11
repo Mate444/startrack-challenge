@@ -3,13 +3,16 @@ import { FavoriteProps, HeroType } from '../../types';
 import FavoriteHero from '../FavoriteHero/FavoriteHero';
 import swal from 'sweetalert2'
 
-function filterProperly(arr1:any, arr2:any) {
-  const newArr = [];
-  for (let i = 0; i < arr1.length; i++) {
-    if (arr2.indexOf(arr1[i].id) !== - 1) {
-      newArr.push(arr1[i])
-    }
-  }
+//Sorts the heroes according to the first added
+function sortFavorites(arr1:number[], arr2:HeroType[]) {
+  const newArr: HeroType[] = [];
+  arr1.forEach((id:number, index:number) => {
+    arr2.forEach((h:HeroType) => {
+      if (id === h.id) {
+        newArr.push(h);
+      }
+    })
+  })
   return newArr;
 }
 
@@ -25,7 +28,10 @@ const Favorites = (props: FavoriteProps) => {
     localStorage.setItem('favoritesArray', JSON.stringify(filteredFavoriteHeroes));
     setFavoriteHeroes(filteredFavoriteHeroes);
   };
-  const filteredFavorites = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) !== -1);
+  let filteredFavorites = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) !== -1);
+  if (filteredFavorites !== undefined) {
+    filteredFavorites = sortFavorites(favoriteHeroes, filteredFavorites);
+  }
   return (
     <div>
       {
@@ -35,7 +41,7 @@ const Favorites = (props: FavoriteProps) => {
           {
           filteredFavorites && filteredFavorites.map((h: HeroType, i: number) => (
             <div key={i}>
-                <FavoriteHero hero={h} handleFavoriteHeroes={handleFavoriteHeroes} favoriteHeroes={favoriteHeroes} />
+                <FavoriteHero  index={i} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} favoriteHeroes={favoriteHeroes} />
               </div>
             ))
          }
