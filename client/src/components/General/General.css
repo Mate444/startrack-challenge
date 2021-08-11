@@ -1,0 +1,27 @@
+.general-container {
+    display:flex;
+    flex-direction: column;
+    height: 30em;
+}
+
+.general-heroes {
+    padding: 3em;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.general-input-container {
+  align-self: flex-end;
+  margin-right: 5em;
+  height: 3em;
+}
+
+.general-input {
+  background-color: rgba(128, 128, 128, 0.372);
+  border: none;
+  color: white;
+  border-radius: 2em;
+  height: 2em;
+}
