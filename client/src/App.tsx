@@ -56,21 +56,21 @@ function App() {
     </ContentLoader>
   )
   return (
-    <div className='main-container'>
+    <div className='app-container'>
+      <h1 className='app-h1'>Startrack Challenge</h1>
       {
         heroes !== null ?
-        <div>
+        <div className='info-container'>
           <Favorites heroes={heroes} favoriteHeroes={favoriteHeroes} setFavoriteHeroes={setFavoriteHeroes} />
+          <h1 className='app-h1'>All Heroes</h1>
           <General favoriteHeroes={favoriteHeroes} setFavoriteHeroes={setFavoriteHeroes} heroes={heroes} setHeroes={setHeroes}/>
         </div> :
+        <div className='loader-container'>
         <MyLoader />
+        </div>
       }
     </div>
   );
 };
 
 export default App;
-
-/**
- *  
- */
