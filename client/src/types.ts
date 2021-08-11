@@ -13,7 +13,6 @@ export interface HeroType {
   realName: string,
   image: string,
   power: HeroPowers,
-  
 }
 
 export interface HeroPowers {
@@ -37,6 +36,7 @@ export interface FavoriteProps {
 }
 
 export interface HeroProps {
+  index: number,
   hero: HeroType,
   handleFavoriteHeroes(id: number): void,
   favoriteHeroes: number[]

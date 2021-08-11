@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import { GeneralProps, HeroType } from "../../types";
 import {FixedSizeList} from 'react-window';
@@ -48,7 +47,7 @@ const General = (props: GeneralProps) => {
       <div>
      { data?.map((h: HeroType, i: number) => (
         <div key={i}>
-          <Hero favoriteHeroes={favoriteHeroes} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} />
+          <Hero index={i} favoriteHeroes={favoriteHeroes} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} />
         </div>
               ))
      }
