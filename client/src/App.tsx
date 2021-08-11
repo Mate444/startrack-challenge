@@ -16,6 +16,7 @@ function App() {
           "https://akabab.github.io/superhero-api/api/all.json"
         )
         .then((r) => {
+          // Type any because I don't know what type of data the api responds me with
           const fixedHeroes = r.data.map((h:any) => {
             return {
               id: h.id,

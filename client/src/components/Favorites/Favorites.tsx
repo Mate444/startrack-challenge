@@ -19,17 +19,17 @@ function sortFavorites(arr1:number[], arr2:HeroType[]) {
 
 const Favorites = (props: FavoriteProps) => {
   const { heroes, favoriteHeroes, setFavoriteHeroes } = props;
-  const [toggle, setToggle] = useState('open');
+  const [toggle, setToggle] = useState<string>('open');
   function handleFavoriteHeroes(id: number) {
     swal.fire({
       title: 'Hero deleted from Favorites',
       icon: 'warning',
     })
-    const filteredFavoriteHeroes = favoriteHeroes.filter((heroId: number) => heroId !== id);
+    const filteredFavoriteHeroes: number[] | undefined = favoriteHeroes.filter((heroId: number) => heroId !== id);
     localStorage.setItem('favoritesArray', JSON.stringify(filteredFavoriteHeroes));
     setFavoriteHeroes(filteredFavoriteHeroes);
   };
-  let filteredFavorites = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) !== -1);
+  let filteredFavorites = heroes?.filter((h: HeroType) => favoriteHeroes.indexOf(h.id) !== -1);
   if (filteredFavorites !== undefined) {
     filteredFavorites = sortFavorites(favoriteHeroes, filteredFavorites);
   }

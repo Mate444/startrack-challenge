@@ -10,30 +10,30 @@ import './General.css';
 const General = (props: GeneralProps) => {
   const { heroes, setFavoriteHeroes, favoriteHeroes } = props;
   const [searchInput, setSearchInput] = useState<string>('');
-  const [generalHeroes, setGeneralHeroes] = useState(heroes);
-  const [flag, setFlag] = useState(false);
+  const [generalHeroes, setGeneralHeroes] = useState<HeroType[] | null>(heroes);
+  const [flag, setFlag] = useState<boolean>(false);
   
   useEffect(() => {
-    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);  
+    const filtered: HeroType[] | undefined = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);  
     filtered && setGeneralHeroes(filtered);
     if (flag) {
       localStorage.setItem('favoritesArray', JSON.stringify(favoriteHeroes));
     };
   }, [favoriteHeroes]);
   useEffect(() => {
-    const retrieved = localStorage.getItem('favoritesArray');
+    const retrieved: string | null = localStorage.getItem('favoritesArray');
     retrieved && setFavoriteHeroes(JSON.parse(retrieved));
   }, [])
   useEffect(() => {
-    const filtered = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
+    const filtered: HeroType[] | undefined = heroes?.filter((h) => favoriteHeroes.indexOf(h.id) === -1);
     if (searchInput.length > 0) {
-      const heroResults = filtered?.filter((h) => h.name.includes(searchInput));
+      const heroResults: HeroType[] | undefined = filtered?.filter((h) => h.name.includes(searchInput));
       heroResults && setGeneralHeroes(heroResults);
     } else {
       filtered && setGeneralHeroes(filtered);
     };
   }, [searchInput])
-  function handleFavoriteHeroes(id: number) {
+  function handleFavoriteHeroes(id: number): void {
     swal.fire({
      title: 'New Hero added to Favorites!',
      icon: 'success'

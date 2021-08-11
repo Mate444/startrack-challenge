@@ -13,7 +13,7 @@ const Hero = (props: HeroProps) => {
       <p className='hero-name'>{name}</p>
       <p className='hero-realname'>{realName}</p>
       <p className='hero-power'>💪{totalPower}</p>
-      <button className='hero-btn' onClick={() => handleFavoriteHeroes(id)}>Add</button>
+      <button className='hero-btn' onClick={() => handleFavoriteHeroes(id)}>❤️</button>
     </div>
   )
 }
