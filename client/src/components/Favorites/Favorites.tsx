@@ -33,11 +33,14 @@ const Favorites = (props: FavoriteProps) => {
   
 
   return (
-    <div className='favorites-container'>
-      <h1 className='favorites-h1'>Liked</h1>
+    <div className='favorites-container container'>
+      <div className='favorites-title'>
+        <h1 className='favorites-h1'>Liked</h1>
+      </div>
       {
         toggle === 'open' &&
         <div className='favorites-wrapper'>
+           <button className='collapse-btn' onClick={() => setToggle('closed')}>▲</button>
           <div className='favorite-heroes'>
           {
            filteredFavorites && filteredFavorites.length > 0 ? filteredFavorites.map((h: HeroType, i: number) => (
@@ -45,7 +48,6 @@ const Favorites = (props: FavoriteProps) => {
             )) : <h1 className='favorites-h1'>You haven't added any heroes yet</h1>
          }
           </div>
-          <button className='collapse-btn' onClick={() => setToggle('closed')}>▲</button>
         </div>
       }
       {

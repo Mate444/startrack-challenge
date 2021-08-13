@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import { GeneralProps, HeroType, GridProps } from "../../types";
 import {FixedSizeGrid} from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import Hero from "../Hero/Hero";
 
 const General = (props: GeneralProps) => {
@@ -36,29 +37,41 @@ const General = (props: GeneralProps) => {
    window.scrollTo(0, 0);
   };
   const Cell = (props:GridProps) => {
-    const { data, rowIndex, style } = props;
+    const { data, rowIndex } = props;
     return (
-    <div style={style}>
+    <div className='general-hero'>
       <Hero key={rowIndex} index={rowIndex} favoriteHeroes={favoriteHeroes} hero={data[rowIndex]} handleFavoriteHeroes={handleFavoriteHeroes} />
     </div>
   )};
 
+  const styles = {
+    display: 'flex',
+    rowDirection: 'column',
+  }
+
   return <div className='general-container'>
     <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
       { generalHeroes && generalHeroes.length > 0 ?
-        <FixedSizeGrid
+        <AutoSizer>
+          {
+            ({ height, width }) => (
+              <FixedSizeGrid
         columnCount={1}
         columnWidth={250}
-        height={400}
+        height={height}
         rowCount={generalHeroes.length}
         rowHeight={450}
         itemData={generalHeroes}
-        width={935}
+        width={width}
+        style={styles}
       >
         {Cell}
       </FixedSizeGrid>
+            )
+          }
+      </AutoSizer>
      :
-        <div className='general'>
+        <div className='general-h1'>
         <h1>Hero Not Found</h1>
       </div>
       }

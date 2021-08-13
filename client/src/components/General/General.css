@@ -4,13 +4,13 @@
     height: 30em;
 }
 
-.general-heroes {
+/*.general-heroes {
     padding: 3em;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
-}
+}*/
 
 .general-input-container {
   align-self: flex-end;
@@ -24,4 +24,29 @@
   color: white;
   border-radius: 2em;
   height: 2em;
+}
+
+@media (max-width: 425px) {
+  .general-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .general-input-container {
+    align-self: flex-end;
+  }
+  .general-input {
+    width: 14rem;
+  }
+  .general-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .general-h1 {
+    text-align: center;
+  }
+  .general-hero {
+    align-self: center;
+    margin:auto;
+  }
 }
