@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { FavoriteProps, HeroType } from '../../types';
-import Hero from '../Hero/Hero';
+import FavoriteHero from '../FavoriteHero/FavoriteHero';
 import './Favorites.css';
 
 //Sorts the heroes according to the first added
@@ -39,12 +39,12 @@ const Favorites = (props: FavoriteProps) => {
       </div>
       {
         toggle === 'open' &&
-        <div className='favorites-wrapper'>
+        <div key={toggle} className='favorites-wrapper'>
            <button className='collapse-btn' onClick={() => setToggle('closed')}>▲</button>
           <div className='favorite-heroes'>
           {
            filteredFavorites && filteredFavorites.length > 0 ? filteredFavorites.map((h: HeroType, i: number) => (
-                <Hero key={i} index={i} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} favoriteHeroes={favoriteHeroes} />
+                <FavoriteHero key={i} index={i} hero={h} handleFavoriteHeroes={handleFavoriteHeroes} favoriteHeroes={favoriteHeroes} />
             )) : <h1 className='favorites-h1'>You haven't added any heroes yet</h1>
          }
           </div>

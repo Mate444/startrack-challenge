@@ -47,5 +47,5 @@ export interface GridProps {
   rowIndex: number,
   columnIndex: number,
   style: CSSProperties,
-  itemKey?: any,
+  columnCount?: number,
 }

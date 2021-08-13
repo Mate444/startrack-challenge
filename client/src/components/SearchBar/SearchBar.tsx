@@ -9,8 +9,7 @@ const SearchBar = (props: SearchInput) => {
   }
   return (
     <div className='general-input-container'>
-      <label>🔍</label>
-      <input className={'general-input'} onChange={handleInputChange} value={searchInput} />
+      <input placeholder='🔍 Search' className={'general-input'} onChange={handleInputChange} value={searchInput} />
     </div>
   );
 };

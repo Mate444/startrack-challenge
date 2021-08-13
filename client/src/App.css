@@ -31,10 +31,14 @@ body {
 .container {
   width: 85%;
   margin: 0 auto;
-  max-width: 65em;
 }
 
 .app-title {
   margin: 1em 0 1em 0;
   text-align: center;
+  width: 85%;
+  align-self: flex-start;
+}
+.app-h1 {
+  width: 85%;
 }

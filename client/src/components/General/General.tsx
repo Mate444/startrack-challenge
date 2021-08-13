@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
+import { useMediaQuery } from '@material-ui/core';
 import SearchBar from "../SearchBar/SearchBar";
 import { GeneralProps, HeroType, GridProps } from "../../types";
 import {FixedSizeGrid} from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import AutoSizer from 'react-virtualized-auto-sizer'
 import Hero from "../Hero/Hero";
 
 const General = (props: GeneralProps) => {
@@ -36,46 +37,54 @@ const General = (props: GeneralProps) => {
    setFavoriteHeroes([...favoriteHeroes, id]);
    window.scrollTo(0, 0);
   };
+
+  let columnCount = 0;
+  const S = useMediaQuery('(max-width: 425px)');
+  const XL = useMediaQuery('(min-width: 1440px)')
+
+  if (S) {
+    columnCount = 1;
+  } else if (XL) {
+    columnCount = 5
+  } else {
+    columnCount = 4;
+  }
+  
   const Cell = (props:GridProps) => {
-    const { data, rowIndex } = props;
+    const { data, columnIndex, rowIndex, style } = props;
+    let index = rowIndex * columnCount + columnIndex;
     return (
-    <div className='general-hero'>
-      <Hero key={rowIndex} index={rowIndex} favoriteHeroes={favoriteHeroes} hero={data[rowIndex]} handleFavoriteHeroes={handleFavoriteHeroes} />
+    <div style={style}>
+      <Hero key={rowIndex} index={rowIndex} favoriteHeroes={favoriteHeroes} hero={data[index]} handleFavoriteHeroes={handleFavoriteHeroes} />
     </div>
   )};
-
-  const styles = {
-    display: 'flex',
-    rowDirection: 'column',
-  }
 
   return <div className='general-container'>
     <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
       { generalHeroes && generalHeroes.length > 0 ?
-        <AutoSizer>
-          {
-            ({ height, width }) => (
-              <FixedSizeGrid
-        columnCount={1}
-        columnWidth={250}
-        height={height}
-        rowCount={generalHeroes.length}
-        rowHeight={450}
-        itemData={generalHeroes}
-        width={width}
-        style={styles}
-      >
-        {Cell}
-      </FixedSizeGrid>
-            )
-          }
+      <AutoSizer>
+        {({width, height}) => (
+          <FixedSizeGrid
+          columnCount={columnCount}
+          columnWidth={S ? 242 : 285}
+          height={550}
+          rowCount={Math.round(generalHeroes.length / columnCount) < 1 ? 1 : Math.round(generalHeroes.length / 4)}
+          rowHeight={S ? 394 : 174}
+          itemData={generalHeroes}
+          width={width}
+          className='general-grid'
+        >
+          {Cell }
+        </FixedSizeGrid>
+        )}
       </AutoSizer>
+        
      :
-        <div className='general-h1'>
+        <div className='general'>
         <h1>Hero Not Found</h1>
       </div>
       }
   </div>;
 };
 
-export default General;
+export default (General);
