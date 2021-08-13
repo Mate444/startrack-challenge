@@ -59,6 +59,12 @@
     justify-self: flex-end;
     grid-row: 4/5;
     grid-column: 1/2;
+    transition-duration: 0.5s
+  }
+
+  .hero-btn:hover
+  .hero-btn:focus {
+    background-color: #4f31e3;
   }
   
   .new-hero {
@@ -161,11 +167,6 @@
     background-color: #7B61FF;
     border: none;
     transition: 250ms ease-in-out;
-  }
-  .hero-btn:hover
-  .hero-btn:focus {
-    transform: scale(1.2);
-    opacity: .9;
   }
   .new-hero {
     position: absolute;
