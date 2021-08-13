@@ -1,27 +1,73 @@
-.general-container {
+@media(min-width: 425px) {
+  .general-input-container {
+    align-self: flex-end;
+    height: 3em;
+    width: 410px;
+    margin: 0 5rem 0.5em 0;
+  }
+  
+  .general-container {
     display:flex;
     flex-direction: column;
-    height: 30em;
+    height: 70vh;
 }
 
-.general-heroes {
-    padding: 3em;
-    width: 100%;
+  .general-input {
+    background-color: rgba(128, 128, 128, 0.372);
+    border: none;
+    color: white;
+    border-radius: 2em;
+    height: 2em;
+    width: 371px;
+}
+
+.general-grid {
+  display: flex;
+  justify-content: space-around;
+  animation: drop 0.3s ease;
+}
+}
+@keyframes drop {
+	0% {
+		opacity: 0;
+		transform: translateY(-80px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+
+@media (max-width: 425px) {
+  .general-container {
+    display: flex;
+    flex-direction: column;
+    width: 14rem;
+    height: 60vh;
+  }
+  .general-input-container {
+    align-self: center;
+    margin: 0;
+  }
+  .general-input {
+    background-color: rgba(128, 128, 128, 0.372);
+    border: none;
+    color: white;
+    height: 2em;
+    border-radius: 2em;
+
+    width: 14rem;
+  }
+  .general-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 1em;
-}
-
-.general-input-container {
-  align-self: flex-end;
-  margin-right: 5em;
-  height: 3em;
-}
-
-.general-input {
-  background-color: rgba(128, 128, 128, 0.372);
-  border: none;
-  color: white;
-  border-radius: 2em;
-  height: 2em;
+    justify-content: center;
+  }
+  .general-h1 {
+    text-align: center;
+  }
+  .general-hero {
+    align-self: center;
+    margin:auto;
+  }
 }

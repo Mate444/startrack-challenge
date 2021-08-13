@@ -1,43 +1,87 @@
-.favorites-container {
-  width: 85%;
-  height: auto;
-  align-self: center;
-  margin-bottom: 5em;
-  text-align: center;
-}
-
-.favorites-wrapper {
-  display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  justify-content: flex-end;
-  background-color:rgb(30, 1, 89);
-  padding: 0.5em;
-  border: 1px solid gray;
-  border-radius: 2em;
-  transition: 0.3 ease;
-}
-
-.favorite-heroes {
-  padding: 3em;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2em;
-}
-
-.collapse-btn {
-    display: inline-block;
-    height: 2em;
-    padding: 0.3em 0.75em;
-    font-size: 1.25em;
-    background:blue;
-    text-transform: uppercase;
+@media (min-width: 425px) {
+  .favorites-container {
+    width: 95%;
+    height: auto;
+    align-self: center;
+    margin-bottom: 5em;
+    text-align: center;
+  }
+  
+  .favorites-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-end;
+    border: 1px solid gray;
+    border-radius: 2em;
+    transition: 0.3 ease;
+    animation: drop 0.3s ease;
+  }
+  
+  .favorite-heroes {
+    padding: 3em;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2em;
+  }
+  
+  .collapse-btn {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 100%;
     border: none;
     color: white;
+    background-color: rgba(128, 128, 128, 0.372);
+    align-self: flex-end;
+  }
+  
+  
+  .favorites-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+ 
+} 
+@keyframes drop {
+	0% {
+		opacity: 0;
+		transform: translateY(-80px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+
+@media (max-width: 425px) {
+  .favorites-container {
+    width: 100%;
+    margin-bottom: 5em;
+    text-align: center;
+    order: 1;
+    margin: auto;
+    align-self: center;
+  }
+  .collapse-btn {
+    height: 3rem;
+    width: 3rem;
     border-radius: 100%;
-    font-weight: 700;
-    transition: 250ms ease-in-out,
-    opacity 250ms linear;
+    border: none;
+    order: 0;
+    color: white;
+    background-color: rgba(128, 128, 128, 0.372);
+  } 
+  .favorite-heroes {
+    display: flex;
+    flex-wrap: wrap;
+
+  }
+  .favorites-title {
+    margin-bottom: 1em;
+    padding: 1em;
+    border-bottom: 1px solid gray;
+  }
 }

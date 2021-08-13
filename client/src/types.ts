@@ -1,8 +1,8 @@
 import React from "react";
 
+import { CSSProperties } from "react";
 export interface GeneralProps {
   heroes: HeroType[] | null,
-  setHeroes: React.Dispatch<React.SetStateAction<HeroType[] | null>>,
   setFavoriteHeroes: React.Dispatch<React.SetStateAction<number[]>>
   favoriteHeroes: number[]
 }
@@ -40,4 +40,12 @@ export interface HeroProps {
   hero: HeroType,
   handleFavoriteHeroes(id: number): void,
   favoriteHeroes: number[]
+}
+
+export interface GridProps {
+  data: HeroType[],
+  rowIndex: number,
+  columnIndex: number,
+  style: CSSProperties,
+  columnCount?: number,
 }

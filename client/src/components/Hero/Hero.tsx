@@ -1,21 +1,43 @@
-import React from 'react';
-import { HeroProps } from '../../types';
-import './Hero.css';
+import React from "react";
+import { HeroProps } from "../../types";
+import "../Hero/Hero.css";
 
 const Hero = (props: HeroProps) => {
-  const { hero: {name, realName, image, power, id}, handleFavoriteHeroes } = props;
-  const { combat, durability, intelligence, speed, strength } = power;
-  let totalPower:number = combat + durability + intelligence + speed + strength + power.power;
+  const { hero, handleFavoriteHeroes, index, favoriteHeroes } = props;
+
+  let totalPower: number =
+    hero?.power?.combat +
+    hero?.power?.durability +
+    hero?.power?.intelligence +
+    hero?.power?.speed +
+    hero?.power?.strength +
+    hero?.power?.power;
   totalPower = Math.round(totalPower / 10);
-  return (
-    <div className='hero-container'>
-      <img className='hero-image' src={image} alt='hero' />
-      <p className='hero-name'>{name}</p>
-      <p className='hero-realname'>{realName}</p>
-      <p className='hero-power'>💪{totalPower}</p>
-      <button className='hero-btn' onClick={() => handleFavoriteHeroes(id)}>❤️</button>
+
+  return hero ? (
+    <div key={index} className="hero-container">
+      <div className="hero-background-image-container">
+        <img className="hero-background-image" src={hero.image} alt="hero" />
+      </div>
+      <div className="hero-wrapper">
+        <img className="hero-image" src={hero.image} alt="hero" />
+        <p className="hero-name">{hero.name}</p>
+        {hero.realName && (
+          <p className="hero-realname">
+            Real Name: <br />
+            {hero.realName}
+          </p>
+        )}
+        <p className="hero-power">💪{totalPower}</p>
+        <button
+          className="hero-btn"
+          onClick={() => handleFavoriteHeroes(hero?.id)}
+        >
+          ❤️
+        </button>
+      </div>
     </div>
-  )
-}
+  ) : null;
+};
 
 export default Hero;
